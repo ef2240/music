@@ -1,5 +1,6 @@
 # Count number of users
 print(users[, .N])
 
-# Count number of active users
-print(listens[, length(unique(profile_id))])
+# Create dataset of active users and find length
+active.users <- users[users$profile_id %in% listens$profile_id]
+print(active.users[, .N])
