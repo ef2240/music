@@ -1,5 +1,3 @@
-# NOTE: Running read_data.R is a prerequisite for this code
-
 # Count number of users
 print(users[, .N])
 
