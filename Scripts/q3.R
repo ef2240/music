@@ -1,3 +1,7 @@
+# Load package
+library(ggplot2)
+library(gridExtra)
+
 # Find distribution of genre listens by age/gender
 setkey(listens, "artist_seed")
 listen.details <- listens[artists]
@@ -15,9 +19,13 @@ levels(listen.counts$genre) <- c(levels(listen.counts$genre), "Other")
 listen.counts$genre[!listen.counts$genre %in% top.genres] <- "Other"
 listen.counts.rollup <- listen.counts[, list(listens=sum(listens)), by=list(genre, gender, age)]
 
-# Create stacked area charts
+# Function to create stacked area charts
 createStackedAreaChart <- function(male){
   chart <- ggplot(listen.counts.rollup[gender == ifelse(male, "MALE", "FEMALE")][order(genre, decreasing=T)], aes(x=age, y=listens))
   chart + geom_area(aes(fill=genre), position="fill") + theme(panel.grid=element_blank(), panel.background=element_blank(), axis.text.y=element_blank(), axis.title.y=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_text(size=14, colour="black"), axis.ticks.x=element_line(colour="black"), plot.title=element_text(face="bold", size=22, vjust=2)) + ggtitle(sprintf("%s Music Interests by Age", ifelse(male, "Male", "Female"))) + scale_y_continuous(expand=c(0, 0))
 }
-createStackedAreaChart(male=T)
+
+# Create male and female plots side by side
+male.plot <- createStackedAreaChart(male=T)
+female.plot <- createStackedAreaChart(male=F)
+grid.arrange(male.plot, female.plot, ncol=2)
