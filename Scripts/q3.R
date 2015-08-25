@@ -53,10 +53,10 @@ createStackedAreaChart <- function(male, data=listen.counts.moving){
           axis.ticks.y=element_blank(),
           axis.text.x=element_text(size=14, colour="black"),
           axis.ticks.x=element_line(colour="black"),
-          plot.title=element_text(face="bold", size=22, vjust=2),
+          plot.title=element_text(face="bold", size=24, vjust=2),
           legend.position="none",
           text=element_text((family="Calibri"))) +
-    geom_text(data=text.points, aes(x=age, y=heights, label=genre), fontface="bold", family="Calibri", size=6)
+    geom_text(data=text.points, aes(x=age, y=heights, label=genre), fontface="bold", family="Calibri", size=7)
 }
 
 # Create and save male and female plots side by side
