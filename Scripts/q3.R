@@ -3,7 +3,7 @@ library(ggplot2)
 library(gridExtra)
 library(RColorBrewer)
 
-# Find distribution of genre listens by age/gender
+# Find distribution of genre listens by age + gender
 setkey(listens, "artist_seed")
 listen.details <- listens[artists]
 setkey(listen.details, "profile_id")
@@ -13,7 +13,7 @@ listen.counts <- listen.details[!is.na(gender) & !is.na(age) & !is.na(genre), li
 # Remove users older than 62 (out of sample size concerns)
 listen.counts <- listen.counts[age <= 62]
 
-# Roll up long tail on genres into "Other"
+# Roll up long tail of genres into "Other"
 genre.counts <- listen.counts[, list(total=sum(listens)), by=genre]
 top.genres <- genre.counts[order(total, decreasing=T)][1:5, genre]
 levels(listen.counts$genre) <- c(levels(listen.counts$genre), "Other")
