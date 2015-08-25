@@ -2,6 +2,7 @@
 library(ggplot2)
 library(gridExtra)
 library(RColorBrewer)
+library(extrafont)
 
 # Find distribution of genre listens by age + gender
 setkey(listens, "artist_seed")
@@ -47,8 +48,9 @@ createStackedAreaChart <- function(male, data=listen.counts.moving){
           axis.text.x=element_text(size=14, colour="black"),
           axis.ticks.x=element_line(colour="black"),
           plot.title=element_text(face="bold", size=22, vjust=2),
-          legend.position="none") +
-    geom_text(data=text.points, aes(x=age, y=heights, label=genre), fontface="bold", size=6)
+          legend.position="none",
+          text=element_text((family="Calibri"))) +
+    geom_text(data=text.points, aes(x=age, y=heights, label=genre), fontface="bold", family="Calibri", size=6)
 }
 
 # Create and save male and female plots side by side
