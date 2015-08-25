@@ -20,7 +20,7 @@ levels(listen.counts$genre) <- c(levels(listen.counts$genre), "Other")
 listen.counts$genre[!listen.counts$genre %in% top.genres] <- "Other"
 listen.counts.rollup <- listen.counts[, list(listens=sum(listens)), by=list(genre, gender, age)]
 
-# Calculate moving averages
+# Calculate moving averages to create smoother, more stable visualization
 calculateMovingAverage <- function(vec, window){
   filter(vec, rep(1/window, window), sides=2)
 }
