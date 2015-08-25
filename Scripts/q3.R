@@ -14,7 +14,7 @@ listen.counts <- listen.counts[age <= 62]
 
 # Roll up long tail on genres into "Other"
 genre.counts <- listen.counts[, list(total=sum(listens)), by=genre]
-top.genres <- genre.counts[order(total, decreasing=T)][1:6, genre]
+top.genres <- genre.counts[order(total, decreasing=T)][1:5, genre]
 levels(listen.counts$genre) <- c(levels(listen.counts$genre), "Other")
 listen.counts$genre[!listen.counts$genre %in% top.genres] <- "Other"
 listen.counts.rollup <- listen.counts[, list(listens=sum(listens)), by=list(genre, gender, age)]
