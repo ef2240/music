@@ -1,6 +1,7 @@
 # Load package
 library(ggplot2)
 library(gridExtra)
+library(RColorBrewer)
 
 # Find distribution of genre listens by age/gender
 setkey(listens, "artist_seed")
@@ -29,7 +30,7 @@ listen.counts.moving <- listen.counts.rollup[, list(age, listens=calculateMoving
 # Function to create stacked area charts
 createStackedAreaChart <- function(male, data=listen.counts.moving){
   chart <- ggplot(data[gender == ifelse(male, "MALE", "FEMALE")][order(genre, decreasing=T)], aes(x=age, y=listens))
-  chart + geom_area(aes(fill=genre), position="fill") + theme(panel.grid=element_blank(), panel.background=element_blank(), axis.text.y=element_blank(), axis.title.y=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_text(size=14, colour="black"), axis.ticks.x=element_line(colour="black"), plot.title=element_text(face="bold", size=22, vjust=2)) + ggtitle(sprintf("%s Music Interests by Age", ifelse(male, "Male", "Female"))) + scale_y_continuous(expand=c(0, 0))
+  chart + geom_area(aes(fill=genre), position="fill") + scale_fill_manual(values=brewer.pal(6, "Pastel1")) + theme(panel.grid=element_blank(), panel.background=element_blank(), axis.text.y=element_blank(), axis.title.y=element_blank(), axis.ticks.y=element_blank(), axis.text.x=element_text(size=14, colour="black"), axis.ticks.x=element_line(colour="black"), plot.title=element_text(face="bold", size=22, vjust=2), legend.position="none") + ggtitle(sprintf("%s Music Interests by Age", ifelse(male, "Male", "Female"))) + scale_y_continuous(expand=c(0, 0))
 }
 
 # Create male and female plots side by side
