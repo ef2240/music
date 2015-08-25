@@ -29,11 +29,13 @@ listen.counts.moving <- listen.counts.rollup[, list(age, listens=calculateMoving
 
 # Function to create stacked area charts
 createStackedAreaChart <- function(male, data=listen.counts.moving){
-  chart <- ggplot(data[gender == ifelse(male, "MALE", "FEMALE")][order(genre, decreasing=T)], aes(x=age, y=listens))
-  chart +
+  filtered <- data[gender == ifelse(male, "MALE", "FEMALE")][order(genre, decreasing=T)]
+  text.points <- filtered[age == 40, list(genre, age, heights=(cumsum(listens) - .5 * as.numeric(listens)) / sum(listens))]
+  chart <- ggplot(filtered, aes(x=age, y=listens))
+  chart <- chart +
     geom_area(aes(fill=genre), position="fill") +
     scale_x_continuous(breaks=c(21, seq(30, 60, 10))) +
-    scale_fill_manual(values=brewer.pal(6, "Pastel1")) +
+    scale_fill_manual(values=brewer.pal(6, "Set3")) +
     xlab("Age") +
     ggtitle(sprintf("%s Music Interests by Age", ifelse(male, "Male", "Female"))) +
     scale_y_continuous(expand=c(0, 0)) +
@@ -45,7 +47,8 @@ createStackedAreaChart <- function(male, data=listen.counts.moving){
           axis.text.x=element_text(size=14, colour="black"),
           axis.ticks.x=element_line(colour="black"),
           plot.title=element_text(face="bold", size=22, vjust=2),
-          legend.position="none")
+          legend.position="none") +
+    geom_text(data=text.points, aes(x=age, y=heights, label=genre), fontface="bold", size=8)
 }
 
 # Create male and female plots side by side
