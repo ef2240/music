@@ -1,3 +1,9 @@
+# # Install packages
+# install.packages("ggplot2")
+# install.packages("gridExtra")
+# install.packages("RColorBrewer")
+# install.packages("extrafont")
+
 # Load package
 library(ggplot2)
 library(gridExtra)
