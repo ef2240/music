@@ -9,8 +9,8 @@ setkey(listen.details, "profile_id")
 listen.details <- users[listen.details]
 listen.counts <- listen.details[!is.na(gender) & !is.na(age) & !is.na(genre), list(listens=sum(tracks_listened_to)), by=list(gender, age, genre)]
 
-# Remove users older than 61 (out of sample size concerns)
-listen.counts <- listen.counts[age <= 61]
+# Remove users older than 62 (out of sample size concerns)
+listen.counts <- listen.counts[age <= 62]
 
 # Roll up long tail on genres into "Other"
 genre.counts <- listen.counts[, list(total=sum(listens)), by=genre]
@@ -24,7 +24,7 @@ calculateMovingAverage <- function(vec, window){
   filter(vec, rep(1/window, window), sides=2)
 }
 listen.counts.rollup <- listen.counts.rollup[order(age)]
-listen.counts.moving <- listen.counts.rollup[, list(age, listens=calculateMovingAverage(listens, window=3)), by=list(genre, gender)][!is.na(listens)]
+listen.counts.moving <- listen.counts.rollup[, list(age, listens=calculateMovingAverage(listens, window=5)), by=list(genre, gender)][!is.na(listens)]
 
 # Function to create stacked area charts
 createStackedAreaChart <- function(male, data=listen.counts.moving){
